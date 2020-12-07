@@ -1,0 +1,10 @@
+.li {
+  font-size: 16px;
+  padding: 10px 0;
+}
+
+.button {
+  margin-left: 15px;
+  background-color: #dd8f85;
+  border-radius: 10%;
+}

@@ -1,0 +1,10 @@
+.form {
+  flex-wrap: nowrap;
+  border: solid 1px;
+  padding: 30px 0 30px 15px;
+}
+
+.label {
+  display: block;
+  margin: 0 auto 15px;
+}
