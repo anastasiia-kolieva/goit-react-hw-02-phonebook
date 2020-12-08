@@ -17,16 +17,16 @@ class App extends Component {
   state = {
     contacts: [
       // для проверки!!
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+      // { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      // { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      // { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      // { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
   };
 
   // изменить стостояние от предыдущего
-  deleteContact = contactId => {
+  handelDeleteContact = contactId => {
     this.setState(prevState => ({
       // беру все предыдущие контакты.Для каждого из них проверяю
       // по id(сравниваю с id контакта, который нужно удалить)
@@ -36,8 +36,28 @@ class App extends Component {
   };
 
   // Получение данных state.name и state.number c ContactForm
-  contactFormSubmithandler = data => {
-    console.log(data);
+  contactFormSubmithandler = newContact => {
+    console.log(newContact);
+    // Проверить!!!!!!!!!!!!!!!!!!
+    this.setState(prevContact => ({
+      contacts: [...prevContact.contacts, newContact],
+    }));
+  };
+
+  handelCheckUniqueContact = name => {
+    const { contacts } = this.state;
+    // по контанктам проходим и на каждой итераци сравниваем имена существующие
+    // в списке контактов с тем , которое приходит с формы
+    // двойное НЕ используют для преобразования значений к логическому типу
+    const isExistContact = !!contacts.find(contact => contact.name === name);
+
+    //  alert сработает, если в левой части (isExistContact) будет  равен true(если
+    // найдёться уже существующий контакт в списке)
+    isExistContact && alert('Contact is already exist!');
+
+    // функция возвращает ответ "уникальный ли контакт или нет?" Если пришло isExistContact=true(существует контакт),
+    // функция возвращает: "контакт НЕ уникальный"
+    return !isExistContact;
   };
 
   render() {
@@ -45,11 +65,17 @@ class App extends Component {
     return (
       <div style={{ ...stylesForWrapper }}>
         <h1 style={{ ...stylesForTitles }}>Phonebook</h1>
-        <ContactForm onSubmitData={this.contactFormSubmithandler} />
+        <ContactForm
+          onSubmitData={this.contactFormSubmithandler}
+          onCheckUnique={this.handelCheckUniqueContact}
+        />
 
         <h2 style={{ ...stylesForTitles }}>Contacts</h2>
         {/* <Filter /> */}
-        <ContactList contacts={contacts} onDeleteContact={this.deleteContact} />
+        <ContactList
+          contacts={contacts}
+          onDeleteContact={this.handelDeleteContact}
+        />
       </div>
     );
   }

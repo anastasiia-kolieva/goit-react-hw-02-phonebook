@@ -20,9 +20,9 @@ class ContactForm extends Component {
     event.preventDefault();
 
     // валидация формы при сабмите
-    const isvalidateForm = this.validateForm();
+    const isValidateForm = this.validateForm();
     // если форма не валидна, выход
-    if (!isvalidateForm) {
+    if (!isValidateForm) {
       return;
     }
     // если форма валидна,
