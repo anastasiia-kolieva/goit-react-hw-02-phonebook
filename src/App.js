@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import ContactForm from './components/ContactForm/ContactForm';
-// import Filter from './components/Filter/Filter'
+import Filter from './components/Filter/Filter';
 import ContactList from './components/ContactList/ContactList';
 
 const stylesForWrapper = {
@@ -11,6 +11,7 @@ const stylesForWrapper = {
 
 const stylesForTitles = {
   textAlign: 'center',
+  color: '#6B5EAC',
 };
 
 class App extends Component {
@@ -30,9 +31,8 @@ class App extends Component {
   };
 
   // Получение данных state.name и state.number c ContactForm
+  // добавление нового контакта
   contactFormSubmithandler = newContact => {
-    console.log(newContact);
-    // Проверить!!!!!!!!!!!!!!!!!!
     this.setState(prevContact => ({
       contacts: [...prevContact.contacts, newContact],
     }));
@@ -54,20 +54,39 @@ class App extends Component {
     return !isExistContact;
   };
 
+  // Filter
+  changeFilter = event => {
+    this.setState({ filter: event.target.value });
+  };
+
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
+    // возвращаем те контакты, свойсто имени которых включает значение из this.state.filter
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter),
+    );
+  };
+
   render() {
-    const { contacts } = this.state;
+    const { filter } = this.state;
+    // переменная для отрисовки отфильтрованных контактов
+    const filteredContacts = this.getFilteredContacts();
     return (
       <div style={{ ...stylesForWrapper }}>
         <h1 style={{ ...stylesForTitles }}>Phonebook</h1>
+
         <ContactForm
           onSubmitData={this.contactFormSubmithandler}
           onCheckUnique={this.handelCheckUniqueContact}
         />
 
         <h2 style={{ ...stylesForTitles }}>Contacts</h2>
-        {/* <Filter /> */}
+
+        <Filter value={filter} onChange={this.changeFilter} />
+
         <ContactList
-          contacts={contacts}
+          contacts={filteredContacts}
           onDeleteContact={this.handelDeleteContact}
         />
       </div>
