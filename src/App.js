@@ -35,12 +35,17 @@ class App extends Component {
     }));
   };
 
+  // Получение данных state.name и state.number c ContactForm
+  contactFormSubmithandler = data => {
+    console.log(data);
+  };
+
   render() {
     const { contacts } = this.state;
     return (
       <div style={{ ...stylesForWrapper }}>
         <h1 style={{ ...stylesForTitles }}>Phonebook</h1>
-        <ContactForm />
+        <ContactForm onSubmitData={this.contactFormSubmithandler} />
 
         <h2 style={{ ...stylesForTitles }}>Contacts</h2>
         {/* <Filter /> */}

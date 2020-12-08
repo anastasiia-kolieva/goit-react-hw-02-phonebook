@@ -1,9 +1,9 @@
 import { Component } from 'react';
 import s from '../ContactForm/ContactForm.module.css';
+import shortid from 'shortid';
 
 class ContactForm extends Component {
   state = {
-    contacts: [],
     name: '',
     number: '',
   };
@@ -14,15 +14,57 @@ class ContactForm extends Component {
     this.setState({ [name]: value });
   };
 
+  handelSubmit = event => {
+    const { name, number } = this.state;
+    // чтоб не перезагружалась страница по умолчанию
+    event.preventDefault();
+
+    // валидация формы при сабмите
+    const isvalidateForm = this.validateForm();
+    // если форма не валидна, выход
+    if (!isvalidateForm) {
+      return;
+    }
+    // если форма валидна,
+    // прокидываем данные введённые с формы(name,number) выше в App
+    this.props.onSubmitData({ id: shortid.generate(), name, number });
+
+    this.resetForm();
+  };
+
+  // Валидация формы (проверка на то, заполнены ли поля формы)
+  validateForm = () => {
+    const { name, number } = this.state;
+    const { onCheckUnique } = this.props;
+
+    // если не имя или не номер телефона
+    if (!name || !number) {
+      alert('Some field is empty!');
+      // не прошла валидацию
+      // зачем false???????
+      return false;
+    }
+    return onCheckUnique(name);
+  };
+
+  // очистка формы
+  resetForm = () => {
+    this.setState({
+      name: '',
+      number: '',
+    });
+  };
+
   render() {
     const { name, number } = this.state;
     return (
-      <form className={s.form}>
+      <form className={s.form} onSubmit={this.handelSubmit}>
         <label className={s.label}>
           Name{' '}
           <input
             type="text"
             name="name"
+            placeholder="Enter name"
             value={name}
             onChange={this.handleChange}
           ></input>
@@ -32,6 +74,7 @@ class ContactForm extends Component {
           <input
             type="tel"
             name="number"
+            placeholder="Enter phone number"
             value={number}
             onChange={this.handleChange}
           ></input>
