@@ -1,70 +1,75 @@
-# Getting Started with Create React App
+# Телефонная книга
+Напиши приложение хранения контактов телефонной книги.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+      Шаг 1
+Приложение должно состоять из формы и списка контактов. На текущем шаге реализуй добавление имени контакта и отображение списка контактов. Приложение не должно сохранять контакты между разными сессиями (обновление страницы).
 
-## Available Scripts
+Состояние хранящееся в родительском компоненте <App> обязательно должно быть следующего вида, добавлять новые свойства нельзя.
 
-In the project directory, you can run:
+state = {
+  contacts: [],
+  name: ''
+}
+Каждый контакт должен быть объектом со свойствами name и id. Для генерации идентификаторов используй любой подходящий пакет, например uuid. После завершения этого шага, приложение должно выглядеть примерно так.
 
-### `npm start`
+      Шаг 2
+Расширь функционал приложения, позволив пользователям добавлять номера телефонов. Для этого добавь второй инпут в форму, и свойство для хранения его значения в состоянии.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+state = {
+  contacts: [],
+  name: '',
+  number: ''
+}
+После завершения этого шага, приложение должно выглядеть примерно так.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+      Шаг 3
+Добавь поле поиска, которое можно использовать для фильтрации списка контактов по имени.
 
-### `npm test`
+Поле поиска это инпут без формы, значение которого записывается в состояние (контролируемый элемент).
+Логика фильтрации должна быть нечувствительна к регистру.
+state = {
+  contacts: [],
+  filter: '',
+  name: '',
+  number: ''
+}
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Когда мы работаем над новым функционалом, бывает удобно жестко закодировать некоторые данные в состояние. Это избавит от необходимости вручную вводить данные в интерфейсе для тестирования работы нового функционала. Например можно использовать такое начальное состояние.
 
-### `npm run build`
+state = {
+  contacts: [
+    {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+  ],
+  filter: '',
+  name: '',
+  number: ''
+}
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+      Шаг 4
+Если твое приложение реализовано в одном компоненте <App>, выполни рефакторинг, выделив подходящие части в отдельные компоненты. В состоянии корневого компонента <App> останутся только свойства contacts и filter.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+state = {
+  contacts: [],
+  filter: ''
+}
+Достаточно выделить четыре компонента: форма добавления контактов, список контактов, элемент списка контактов и фильтр поиска.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+После рефакторинга корневой компонент приложения будет выглядеть так.
 
-### `npm run eject`
+<div>
+  <h1>Phonebook</h1>
+  <ContactForm ... />
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  <h2>Contacts</h2>
+  <Filter ... />
+  <ContactList ... />
+</div>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+      Шаг 5
+Запрети пользователю возможность добавлять контакты, имена которых уже есть в телефонной книге. При попытке выполнить такое действие выведи alert с предупреждением.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+      Шаг 6
+Расширь функционал приложения, позволив пользователю удалять ранее сохраненные контакты.
